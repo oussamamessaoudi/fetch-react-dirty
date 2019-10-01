@@ -1,5 +1,5 @@
 const ApiStatus = {
-    INITIALIZED: 'INITIALIZED',
+    INITIALIZED: 'INITIALIZE',
     SUCCESS: 'SUCCESS',
     ERROR: 'ERROR',
     CANCEL: 'CANCEL',

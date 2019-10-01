@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, {Component} from 'react';
 import Axios from 'axios';
 
@@ -15,7 +14,7 @@ export default class Fetch extends Component {
     }
 
     componentDidMount() {
-        const {url, method, data} = this.props;
+        const {url, method, data, children} = this.props;
         const {CancelToken} = Axios;
         this.source = CancelToken.source();
         this.setState({status: ApiStatus.LOADING});
@@ -39,12 +38,21 @@ export default class Fetch extends Component {
                     this.setState({status: ApiStatus.ERROR, response: thrown.response});
                 }
             });
+
+    }
+    componentWillMount() {
+        this.children = React.Children.toArray(this.props.children).reduce((total, currentValue, currentIndex, arr)=>{
+            return { ...total, [currentValue.type.name.toUpperCase()] : currentValue }
+        },{})
     }
 
     render() {
         const {children} = this.props;
         const {status, response} = this.state;
-        return children(status, response);
+        if (this.children[status])
+            return React.cloneElement(this.children[status].component,{response});
+        else
+            return null;
     }
 
     componentWillUnmount() {
@@ -53,6 +61,8 @@ export default class Fetch extends Component {
         }
     }
 }
+
+
 Fetch.defaultProps = {
     method: 'get',
     data: {}
