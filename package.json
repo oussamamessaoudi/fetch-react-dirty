@@ -1,0 +1,25 @@
+{
+  "name": "fetch",
+  "version": "1.0.0",
+  "description": "load data with react ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oussamamessaoudi/fetch-react.git"
+  },
+  "keywords": [
+    "react",
+    "axios",
+    "superagent",
+    "fetch"
+  ],
+  "author": "Oussama MESSAOUDI",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oussamamessaoudi/fetch-react/issues"
+  },
+  "homepage": "https://github.com/oussamamessaoudi/fetch-react#readme"
+}
