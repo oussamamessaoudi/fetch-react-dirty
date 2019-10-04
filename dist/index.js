@@ -27,11 +27,19 @@ Object.defineProperty(exports, "Initialize", {
     return _BasicComponent.Initialize;
   }
 });
+Object.defineProperty(exports, "FetchHooks", {
+    enumerable: true,
+    get: function get() {
+        return _FetchHooks.FetchHooks;
+    }
+});
 exports["default"] = void 0;
 
 var _Fetch = _interopRequireDefault(require("./Fetch"));
 
 var _BasicComponent = require("./BasicComponent");
+
+var _FetchHooks = require("./FetchHooks");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 

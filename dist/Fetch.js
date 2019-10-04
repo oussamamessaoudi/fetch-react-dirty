@@ -19,6 +19,27 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _toConsumableArray(arr) {
+    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+}
+
+function _nonIterableSpread() {
+    throw new TypeError("Invalid attempt to spread non-iterable instance");
+}
+
+function _iterableToArray(iter) {
+    if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+}
+
+function _arrayWithoutHoles(arr) {
+    if (Array.isArray(arr)) {
+        for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
+            arr2[i] = arr[i];
+        }
+        return arr2;
+    }
+}
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -55,6 +76,7 @@ function (_Component) {
     _this.source = null;
     _this.state = {
       status: _ApiStatus["default"].INITIALIZED,
+        httpStatus: 0,
       response: {}
     };
     return _this;
@@ -84,7 +106,8 @@ function (_Component) {
         // handle success
         _this2.setState({
           status: _ApiStatus["default"].SUCCESS,
-          response: response.data
+            response: response.data,
+            httpStatus: response.status
         });
       })["catch"](function (thrown) {
         // handle error
@@ -93,7 +116,8 @@ function (_Component) {
         } else {
           _this2.setState({
             status: _ApiStatus["default"].ERROR,
-            response: thrown.response
+              response: thrown.response,
+              httpStatus: thrown.response.status
           });
         }
       });
@@ -101,23 +125,24 @@ function (_Component) {
   }, {
     key: "componentWillMount",
     value: function componentWillMount() {
-      this.children = _react["default"].Children.toArray(this.props.children).reduce(function (total, currentValue, currentIndex, arr) {
-        return _objectSpread({}, total, _defineProperty({}, currentValue.type.name.toUpperCase(), {
-          component: currentValue
-        }));
+        this.children = _react["default"].Children.toArray(this.props.children).reduce(function (total, currentValue) {
+            var child = currentValue.type.name.toUpperCase();
+            if (total[child]) return _objectSpread({}, total, _defineProperty({}, child, [].concat(_toConsumableArray(total[child]), [currentValue]))); else return _objectSpread({}, total, _defineProperty({}, child, [currentValue]));
       }, {});
     }
   }, {
     key: "render",
     value: function render() {
-      var children = this.props.children;
       var _this$state = this.state,
           status = _this$state.status,
-          response = _this$state.response;
-      debugger;
-      return _react["default"].cloneElement(this.children[status].component, {
-        response: response
-      });
+          response = _this$state.response,
+          httpStatus = _this$state.httpStatus;
+        if (this.children[status]) return this.children[status].map(function (child) {
+            return _react["default"].cloneElement(child, {
+                response: response,
+                httpStatus: httpStatus
+            });
+        }); else return null;
     }
   }, {
     key: "componentWillUnmount",

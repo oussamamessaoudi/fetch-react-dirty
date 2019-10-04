@@ -9,6 +9,7 @@ export default class Fetch extends Component {
         this.source = null;
         this.state = {
             status: ApiStatus.INITIALIZED,
+            httpStatus: 0,
             response: {}
         };
     }
@@ -27,7 +28,7 @@ export default class Fetch extends Component {
         })
             .then((response) => {
                 // handle success
-                this.setState({status: ApiStatus.SUCCESS, response: response.data});
+                this.setState({status: ApiStatus.SUCCESS, response: response.data, httpStatus: response.status});
             })
             .catch((thrown) => {
                 // handle error
@@ -35,22 +36,29 @@ export default class Fetch extends Component {
                 if (Axios.isCancel(thrown)) {
                     console.log('Request canceled', thrown.message);
                 } else {
-                    this.setState({status: ApiStatus.ERROR, response: thrown.response});
+                    this.setState({
+                        status: ApiStatus.ERROR,
+                        response: thrown.response,
+                        httpStatus: thrown.response.status
+                    });
                 }
             });
 
     }
     componentWillMount() {
-        this.children = React.Children.toArray(this.props.children).reduce((total, currentValue, currentIndex, arr)=>{
-            return { ...total, [currentValue.type.name.toUpperCase()] : currentValue }
+        this.children = React.Children.toArray(this.props.children).reduce((total, currentValue) => {
+            const child = currentValue.type.name.toUpperCase();
+            if (total[child])
+                return {...total, [child]: [...total[child], currentValue]};
+            else
+                return {...total, [child]: [currentValue]}
         },{})
     }
 
     render() {
-        const {children} = this.props;
-        const {status, response} = this.state;
+        const {status, response, httpStatus} = this.state;
         if (this.children[status])
-            return React.cloneElement(this.children[status].component,{response});
+            return this.children[status].map(child => React.cloneElement(child, {response, httpStatus}));
         else
             return null;
     }

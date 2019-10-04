@@ -1,8 +1,10 @@
 import React from 'react';
-import ApiStatus from "./ApiStatus";
 
-function BasicComponent({response, children}) {
-    return children(response);
+function BasicComponent({response, httpStatus, children}) {
+    if (typeof children === 'function')
+        return children(response, httpStatus);
+    else
+        return children;
 }
 
 function Error(props) {
