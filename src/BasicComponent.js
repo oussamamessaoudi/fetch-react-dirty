@@ -22,4 +22,8 @@ function Initialize(props) {
     return <BasicComponent {...props}/>;
 }
 
-export {Error , Success, Loading, Initialize};
+function Cancel(props) {
+    return <BasicComponent {...props}/>;
+}
+
+export {Error , Success, Loading, Initialize, Cancel};

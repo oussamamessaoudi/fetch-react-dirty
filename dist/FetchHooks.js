@@ -197,15 +197,18 @@ var FetchHooks = function FetchHooks(_ref) {
                 });
             }
         });
+        return function () {
+            if (source) {
+                source.cancel('Operation canceled by component unmounted.');
+            }
+        };
     }, [url, method, data]);
     (0, _react.useEffect)(function () {
-        console.log('child Change');
         setChildrenMap(_react["default"].Children.toArray(children).reduce(function (total, currentValue) {
             var child = currentValue.type.name.toUpperCase();
             if (total[child]) return _objectSpread({}, total, _defineProperty({}, child, [].concat(_toConsumableArray(total[child]), [currentValue]))); else return _objectSpread({}, total, _defineProperty({}, child, [currentValue]));
         }, {}));
     }, [children]);
-    debugger;
     if (childrenMap[state.status]) return childrenMap[state.status].map(function (child) {
         return _react["default"].cloneElement(child, {
             response: state.response,

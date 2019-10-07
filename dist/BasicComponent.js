@@ -7,6 +7,7 @@ exports.Error = Error;
 exports.Success = Success;
 exports.Loading = Loading;
 exports.Initialize = Initialize;
+exports.Cancel = Cancel;
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -34,5 +35,9 @@ function Loading(props) {
 }
 
 function Initialize(props) {
+    return _react["default"].createElement(BasicComponent, props);
+}
+
+function Cancel(props) {
     return _react["default"].createElement(BasicComponent, props);
 }

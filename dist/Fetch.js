@@ -111,9 +111,8 @@ function (_Component) {
         });
       })["catch"](function (thrown) {
         // handle error
-        if (_axios["default"].isCancel(thrown)) {
-          console.log('Request canceled', thrown.message);
-        } else {
+          if (_axios["default"].isCancel(thrown)) {
+          } else {
           _this2.setState({
             status: _ApiStatus["default"].ERROR,
               response: thrown.response,

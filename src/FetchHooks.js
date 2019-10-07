@@ -37,7 +37,6 @@ export const FetchHooks = ({url, method, data, children}) => {
     }, [url, method, data]);
 
     useEffect(() => {
-        console.log('child Change');
         setChildrenMap(React.Children.toArray(children).reduce((total, currentValue) => {
             const child = currentValue.type.name.toUpperCase();
             if (total[child])
@@ -47,7 +46,6 @@ export const FetchHooks = ({url, method, data, children}) => {
         }, {}))
     }, [children]);
 
-    debugger;
     if (childrenMap[state.status])
         return childrenMap[state.status].map(child => React.cloneElement(child, {
             response: state.response,

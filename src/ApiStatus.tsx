@@ -1,0 +1,7 @@
+export enum ApiStatus {
+	INITIALIZE = 'INITIALIZE',
+	SUCCESS = 'SUCCESS',
+	ERROR = 'ERROR',
+	CANCEL = 'CANCEL',
+	LOADING = 'LOADING'
+}

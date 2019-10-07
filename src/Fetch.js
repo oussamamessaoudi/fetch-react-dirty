@@ -34,7 +34,6 @@ export default class Fetch extends Component {
                 // handle error
 
                 if (Axios.isCancel(thrown)) {
-                    console.log('Request canceled', thrown.message);
                 } else {
                     this.setState({
                         status: ApiStatus.ERROR,
